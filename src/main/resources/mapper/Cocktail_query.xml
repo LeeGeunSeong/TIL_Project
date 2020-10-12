@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+	
+<mapper namespace="cocktail" >
+	
+	<insert id ="insert" parameterType="cocktail">
+	insert into cocktail(cid, cname, base, degree, description
+	               , method, material, imageURL) 
+				values(#{cid:INTEGER}
+					  ,#{cname:VARCHAR}
+					  ,#{base:VARCHAR}
+					  ,#{degree:INTEGER}
+					  ,#{description:VARCHAR}
+					  ,#{method:VARCHAR}
+					  ,#{material:VARCHAR}
+					  ,#{imageURL:VARCHAR})
+	</insert>
+
+   
+    <select id = "search" parameterType="string" resultType="cocktail">
+    	select * from cocktail where cid=#{cid}
+    </select>
+  
+  	<select id = "searchAll" parameterType="pagebean" resultType="cocktail">
+    	select * from cocktail
+    	<where>  
+    		<if test="key != null and key != 'all'">
+    			<choose>
+    				<when test="key=='name'">
+    					name like concat('%', #{word}, '%')
+    				</when>
+    				<when test="key=='base'">
+    					base like concat('%', #{word}, '%')
+    				</when>
+    				<when test="key=='material'">
+    					material like concat('%', #{word}, '%')
+    				</when>
+    			 </choose>
+    			
+    		</if>
+    	</where>
+    </select>
+      	
+</mapper>
