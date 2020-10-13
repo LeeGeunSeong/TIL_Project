@@ -1,14 +1,12 @@
 package com.til.model.dao;
 
 import java.util.List;
-
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.til.model.dto.Cocktail;
 import com.til.model.dto.CocktailPageBean;
-import com.til.util.CocktailSAXParser;
 
 @Repository
 public class CocktailDaoImpl implements CocktailDao{
@@ -18,16 +16,9 @@ public class CocktailDaoImpl implements CocktailDao{
 	@Autowired
 	private SqlSession session;
 	
-	public void loadData() {
-		CocktailSAXParser csp = null;
-		try {
-			csp = new CocktailSAXParser();
-			for (Cocktail c : csp.getCocktails()) 
-				session.insert(ns +"insert", c);
-		} catch (Exception e) {
-		}
+	public void insertCocktail(Cocktail c) {
+		session.insert(ns +"insert", c);
 	}
-	
 	public List<Cocktail> searchAll(CocktailPageBean bean){
 		return session.selectList(ns + "searchAll");
 	}
@@ -48,5 +39,4 @@ public class CocktailDaoImpl implements CocktailDao{
 	public void deleteCoctail(int idx) {
 		session.delete(ns+"delete",idx);
 	}
-	
 }
